@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dragon Selector</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    select, input[type="text"] {
+        margin-bottom: 10px;
+        padding: 5px;
+        font-size: 14px;
+    }
+    #output {
+        margin-top: 10px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+	
+	/* Basic tab container */
+	.tab-container {
+		width: 100%;
+		margin-top: 20px;
+	}
+	
+	/* Tab links */
+	.tab-links {
+		overflow: hidden;
+		border-bottom: 1px solid #ccc;
+	}
+
+	.tab-links button {
+		background-color: #f1f1f1;
+		float: left;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		padding: 14px 16px;
+		transition: 0.3s;
+		font-size: 17px;
+	}
+
+	.tab-links button:hover {
+		background-color: #ddd;
+	}
+
+	.tab-links button.active {
+		background-color: #ccc;
+	}
+	
+	/* Tab content */
+	.tab-content {
+		display: none;
+		padding: 20px;
+		border: 1px solid #ccc;
+		border-top: none;
+	}
+
+	.tab-content.active {
+		display: block;
+	}
+</style>
+</head>
+<body>
+    <h2>Dragonvale Address Tool</h2>
+    
+    <div class="tab-container">
+        <div class="tab-links">
+            <button class="tab-link active" onclick="openTab(event, 'Dragons')">Dragons</button>
+            <button class="tab-link" onclick="openTab(event, 'Buildings')">Buildings</button>
+            <button class="tab-link" onclick="openTab(event, 'Islands')">Islands</button>
+        </div>
+
+        <!-- Dragons Tab -->
+        <div id="Dragons" class="tab-content active">
+            <label for="dragon1">Select Dragon 1:</label>
+            <select id="dragon1">
+                <!-- Options will be populated dynamically -->
+            </select>
+            
+            <label for="dragon1Address">Dragon 1 Address (Hex):</label>
+            <input type="text" id="dragon1Address" placeholder="Enter hex address...">
+            
+            <label for="dragon2">Select Dragon 2:</label>
+            <select id="dragon2">
+                <!-- Options will be populated dynamically -->
+            </select>
+            
+            <div id="dragon2Address" class="output">
+                <!-- Output will be displayed here -->
+            </div>
+        </div>
+
+        <!-- Buildings Tab -->
+        <div id="Buildings" class="tab-content">
+            <label for="building1">Select Building 1:</label>
+            <select id="building1">
+                <!-- Options will be populated dynamically -->
+            </select>
+            
+            <label for="building1Address">Building 1 Address (Hex):</label>
+            <input type="text" id="building1Address" placeholder="Enter hex address...">
+            
+            <label for="building2">Select Building 2:</label>
+            <select id="building2">
+                <!-- Options will be populated dynamically -->
+            </select>
+            
+            <div id="building2Address" class="output">
+                <!-- Output will be displayed here -->
+            </div>
+        </div>
+
+        <!-- Islands Tab -->
+        <div id="Islands" class="tab-content">
+            <label for="island1">Select Island 1:</label>
+            <select id="island1">
+                <!-- Options will be populated dynamically -->
+            </select>
+            
+            <label for="island1Address">Island 1 Address (Hex):</label>
+            <input type="text" id="island1Address" placeholder="Enter hex address...">
+            
+            <label for="island2">Select Island 2:</label>
+            <select id="island2">
+                <!-- Options will be populated dynamically -->
+            </select>
+            
+            <div id="island2Address" class="output">
+                <!-- Output will be displayed here -->
+            </div>
+        </div>
+    </div>
+    
+    <div id="island2Address">
+        <!-- Output will be displayed here -->
+    </div>
+	
+	<!-- Load the list of dragons. Needs to be manually updated. -->
+	<script src="dragons.js">
+	</script>
+	
+	 <script>
+        // Function to switch tabs
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+
+            // Hide all tab contents
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Remove "active" class from all tab links
+            tablinks = document.getElementsByClassName("tab-link");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current tab, and add "active" class to the tab link
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+
+    <script>
+	
+		function waitForDragons() {
+    return new Promise((resolve) => {
+        const checkDragons = setInterval(() => {
+            if (dragons) {
+                clearInterval(checkDragons);
+                resolve(dragons);
+            }
+        }, 100); // Check every 100 milliseconds
+    });
+}
+
+		waitForDragons();
+	
+		// Populate dropdowns
+		const dragon1Select = document.getElementById('dragon1');
+		const dragon2Select = document.getElementById('dragon2');
+
+		dragons.forEach((name, index) => {
+			const option1 = document.createElement('option');
+			const option2 = document.createElement('option');
+			option1.textContent = name;
+			option1.value = index + 1; // ID starts from 1
+			option2.textContent = name;
+			option2.value = index + 1; // ID starts from 1
+			
+			if (name == "") {
+				option1.hidden = true;
+				option2.hidden = true;
+			}
+			
+			dragon1Select.appendChild(option1);
+			dragon2Select.appendChild(option2);
+		});
+
+		// Set default selection to "Celerulean Dragon"
+		const defaultDragon = 'celeruleandragon';
+		const defaultDragonIndex = dragons.findIndex(name => name === defaultDragon);
+		dragon1Select.value = defaultDragonIndex + 1; // ID starts from 1
+		dragon2Select.value = defaultDragonIndex + 1; // ID starts from 1
+
+		// Add event listener to calculate difference on change
+		dragon1Select.addEventListener('change', calculateDifference);
+		dragon2Select.addEventListener('change', calculateDifference);
+		document.getElementById('dragon1Address').addEventListener('input', calculateDifference);
+
+		// Calculate difference initially
+		calculateDifference();
+
+        // Function to calculate and display the output
+        function calculateDifference() {
+            const dragon1Id = parseInt(document.getElementById('dragon1').value);
+            const dragon2Id = parseInt(document.getElementById('dragon2').value);
+            const address = document.getElementById('dragon1Address').value.trim();
+
+            if (address === '') {
+                document.getElementById('dragon2Address').textContent = 'Please enter a hex address.';
+                return;
+            }
+
+            const difference = (dragon2Id - dragon1Id) * 8; // Multiply by 8
+
+            // Convert address to decimal, add difference, then convert back to hexadecimal
+            const newAddress = (parseInt(address, 16) + difference).toString(16).toUpperCase();
+
+            document.getElementById('dragon2Address').textContent = `Dragon 2 Address: ${newAddress}`;
+        }
+    </script>
+	
+	<script src="buildings.js">
+	</script>
+
+    <script>
+	
+		while(!buildings) {
+			console.log("not yet loaded");
+		}
+	
+		// Populate dropdowns
+		const building1Select = document.getElementById('building1');
+		const building2Select = document.getElementById('building2');
+
+		buildings.forEach((name, index) => {
+			const option1 = document.createElement('option');
+			const option2 = document.createElement('option');
+			option1.textContent = name;
+			option1.value = index + 1; // ID starts from 1
+			option2.textContent = name;
+			option2.value = index + 1; // ID starts from 1
+			
+			if (name == "") {
+				option1.hidden = true;
+				option2.hidden = true;
+			}
+			
+			building1Select.appendChild(option1);
+			building2Select.appendChild(option2);
+		});
+
+		// Set default selection to "Celerulean building"
+		const defaultBuilding = 'celeruleanbuilding';
+		const defaultBuildingIndex = buildings.findIndex(name => name === defaultBuilding);
+		building1Select.value = defaultBuildingIndex + 1; // ID starts from 1
+		building2Select.value = defaultBuildingIndex + 1; // ID starts from 1
+
+		// Add event listener to calculate difference on change
+		building1Select.addEventListener('change', calculateDifference);
+		building2Select.addEventListener('change', calculateDifference);
+		document.getElementById('building1Address').addEventListener('input', calculateDifference);
+
+		// Calculate difference initially
+		calculateDifference();
+
+        // Function to calculate and display the output
+        function calculateDifference() {
+            const building1Id = parseInt(document.getElementById('building1').value);
+            const building2Id = parseInt(document.getElementById('building2').value);
+            const address = document.getElementById('building1Address').value.trim();
+
+            if (address === '') {
+                document.getElementById('building2Address').textContent = 'Please enter a hex address.';
+                return;
+            }
+
+            const difference = (building2Id - building1Id) * 8; // Multiply by 8
+
+            // Convert address to decimal, add difference, then convert back to hexadecimal
+            const newAddress = (parseInt(address, 16) + difference).toString(16).toUpperCase();
+
+            document.getElementById('building2Address').textContent = `Building 2 Address: ${newAddress}`;
+        }
+    </script>
+	
+	<script src="islands.js">
+	</script>
+
+    <script>
+	
+		while(!islands) {
+			console.log("not yet loaded");
+		}
+	
+		// Populate dropdowns
+		const island1Select = document.getElementById('island1');
+		const island2Select = document.getElementById('island2');
+
+		islands.forEach((name, index) => {
+			const option1 = document.createElement('option');
+			const option2 = document.createElement('option');
+			option1.textContent = name;
+			option1.value = index + 1; // ID starts from 1
+			option2.textContent = name;
+			option2.value = index + 1; // ID starts from 1
+			
+			if (name == "") {
+				option1.hidden = true;
+				option2.hidden = true;
+			}
+			
+			island1Select.appendChild(option1);
+			island2Select.appendChild(option2);
+		});
+
+		// Set default selection to "Celerulean island"
+		const defaultIsland = 'celeruleanisland';
+		const defaultIslandIndex = islands.findIndex(name => name === defaultIsland);
+		island1Select.value = defaultIslandIndex + 1; // ID starts from 1
+		island2Select.value = defaultIslandIndex + 1; // ID starts from 1
+
+		// Add event listener to calculate difference on change
+		island1Select.addEventListener('change', calculateDifference);
+		island2Select.addEventListener('change', calculateDifference);
+		document.getElementById('island1Address').addEventListener('input', calculateDifference);
+
+		// Calculate difference initially
+		calculateDifference();
+
+        // Function to calculate and display the output
+        function calculateDifference() {
+            const island1Id = parseInt(document.getElementById('island1').value);
+            const island2Id = parseInt(document.getElementById('island2').value);
+            const address = document.getElementById('island1Address').value.trim();
+
+            if (address === '') {
+                document.getElementById('island2Address').textContent = 'Please enter a hex address.';
+                return;
+            }
+
+            const difference = (island2Id - island1Id) * 8; // Multiply by 8
+
+            // Convert address to decimal, add difference, then convert back to hexadecimal
+            const newAddress = (parseInt(address, 16) + difference).toString(16).toUpperCase();
+
+            document.getElementById('island2Address').textContent = `Island 2 Address: ${newAddress}`;
+        }
+    </script>
+	
+</body>
+</html>
