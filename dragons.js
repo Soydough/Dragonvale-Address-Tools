@@ -633,6 +633,7 @@ let dragons = [
 	"pisceiandragon",
 	"pitdragon",
 	"pixiedragon",
+	"plaguesdragon",
 	"plainsdragon",
 	"plantdragon",
 	"plateaudragon",
