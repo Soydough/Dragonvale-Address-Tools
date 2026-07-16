@@ -581,6 +581,7 @@ let dragons = [
 	"nightshadedragon",
 	"nimbusdragon",
 	"nimuedragon",
+	"nomaddragon",
 	"nomnoterdragon",
 	"nosferatudragon",
 	"nottubdragon",
