@@ -254,6 +254,7 @@ let dragons = [
 	"exterreandragon",
 	"faedragon",
 	"fairedragon",
+	"fairyoakdragon",
 	"fatesdragon",
 	"beardeddragon = fathersdaydragon",
 	"fauxdragon",
