@@ -557,6 +557,7 @@ let dragons = [
 	"moriantedragon",
 	"morphimagusdragon",
 	"morphodragon",
+	"morraxdragon",
 	"mossdragon",
 	"mosserdragon",
 	"bouquetdragon = mothersdaydragon",
