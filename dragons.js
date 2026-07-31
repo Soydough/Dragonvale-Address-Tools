@@ -901,6 +901,7 @@ let dragons = [
 	"treedragon",
 	"trenchdragon",
 	"trepakdragon",
+	"triastradragon",
 	"trickdragon",
 	"trilobitedragon",
 	"trimeradragon",
