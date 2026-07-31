@@ -1,6 +1,7 @@
 let dragons = [
 	"abraxasdragon",
 	"abyssdragon",
+	"achudragon",
 	"aciddragon",
 	"agrandragon",
 	"ahoydragon",
