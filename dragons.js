@@ -173,6 +173,7 @@ let dragons = [
 	"danceydragon",
 	"dandeliondragon",
 	"dapplethorndragon",
+	"darcoildragon",
 	"darcowldragon",
 	"dargondragon",
 	"darkarmdragon",
